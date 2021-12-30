@@ -62,7 +62,7 @@ export default function AdminDrawer() {
                             <ListItemIcon>
                                 <AddIcon />
                             </ListItemIcon>
-                            <ListItemText primary="Create AnswersSubmit" />
+                            <ListItemText primary="Create Survey" />
                         </ListItem>
                         <ListItem 
                             button

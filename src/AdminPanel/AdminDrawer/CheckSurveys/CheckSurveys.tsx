@@ -1,9 +1,64 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import {useLazyQuery, useQuery} from "@apollo/client";
+import {GET_ALL_SURVEYS} from "./Queries/getAllSurveys";
+import { Grid, Paper } from "@mui/material";
+import QuestionsCheck from "./QuestionsCheck";
+import {GET_QUESTIONS} from "./Queries/getQuestions";
 
 export default function CheckSurveys() {
+    const { data: surveysData } = useQuery(GET_ALL_SURVEYS);
+    const [getQuestions, { data: questionsData }] = useLazyQuery(GET_QUESTIONS);
+    const [allSurveys, setAllSurveys] = useState([])
+    const [questions, setQuestions] = useState<{text: string, id: string}[]>([])
+    
+    const handleCheckSurvey = (surveyId: string) => {
+        console.log(surveyId)
+        getQuestions({variables: {
+            surveyId: surveyId,
+            }})
+    }
+        
+    useEffect(() => {
+        if(surveysData) {
+            setAllSurveys(surveysData.getAllSurveys)
+            console.log(surveysData.getAllSurveys)
+        }
+    }, [surveysData]) 
+    
+    useEffect(() => {
+        if(questionsData) {
+            setQuestions(questionsData.findQuestions)
+            console.log(questionsData.findQuestions)
+        }
+    }, [questionsData])
+
     return (
         <>
-            <div>Check Surveys</div>
-        </>
+            <Grid container>
+                {allSurveys.map((survey: {name: string, id: string}) => {
+                    return (
+                        <Grid item sx={{
+                            '& > :not(style)': {
+                                m: 1,
+                                width: 128,
+                                height: 128,
+                            },}}>
+                            <Paper sx={{
+                                cursor: 'pointer',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+    
+                            }} elevation={1}
+                            onClick={() => handleCheckSurvey(survey.id)}
+                            >
+                                    {survey.name}
+                            </Paper>
+                        </Grid>
+                    )
+                })}
+            </Grid>
+        <QuestionsCheck questions={questions} />
+    </>
     )
 }

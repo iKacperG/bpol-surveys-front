@@ -17,11 +17,6 @@ const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   uri: 'http://localhost:3000/graphql',
 });
 
-
-export interface AppProps {
-    answers: {}[];
-}
-
 function App() {
     return (
       <ApolloProvider client = {client}>
@@ -40,3 +35,7 @@ function App() {
 }
 
 export default App;
+
+export interface AppProps {
+    answers: {}[];
+}
