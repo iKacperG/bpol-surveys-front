@@ -12,7 +12,7 @@ import {
     Radio,
 } from "@mui/material";
 import {useMutation} from "@apollo/client";
-import {CREATE_SURVEY} from "../../Mutations/createSurvey";
+import {CREATE_SURVEY} from "../../../../Mutations/createSurvey";
 
 export default function CreateSurvey() {
     const [actualQuestion, setActualQuestion] = useState({
@@ -22,7 +22,7 @@ export default function CreateSurvey() {
     const [inputType, setInputType] = useState("text")
     const [title, setTitle] = useState("");
     const [questions, setQuestions] = useState<{text: string, inputType: string}[]>([]);
-    const [createSurvey, { error }] = useMutation(CREATE_SURVEY);
+    const [createSurvey] = useMutation(CREATE_SURVEY);
     const [surveyResponse, setSurveyResponse] = useState({
         createSurvey: {
             url: "",
@@ -55,8 +55,7 @@ export default function CreateSurvey() {
     const handleAddSurveySubmit = async (event: FormEvent) => {
         event.preventDefault()
         const response = await createSurvey({variables: {title: title, questions: questions}})
-        if(error) {
-        }
+        
         if(response) {
             await setSurveyResponse(response.data)
         }

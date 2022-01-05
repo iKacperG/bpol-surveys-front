@@ -1,7 +1,7 @@
 import React, {ChangeEvent, useEffect, useState} from 'react';
 import { useParams } from "react-router";
 import { useQuery} from "@apollo/client";
-import getMatchingQuestions from "../Queries/getMatchingQuestions";
+import {GET_MATCHING_QUESTIONS} from "../../../Queries/getMatchingQuestions";
 import {
     Box,
     FormControl,
@@ -13,15 +13,16 @@ import {
 } from "@mui/material";
 import AnswersSubmit from "../AnswersSubmit";
 
-export interface IObjectAny {
-    [key: string]: any;
-}
-
 export default function Questions() {
-    const [, setQuestions] = useState([])
     const { id } = useParams();
-    const { data } = useQuery(getMatchingQuestions(id));
+    const { data } = useQuery(GET_MATCHING_QUESTIONS, {variables: {id: id}});
+    const [questions, setQuestions] = useState([])
     const [answers, setAnswers] = useState<{input: string, questionId: string}[]>([])
+    
+    const getActualQuestionInput = (question: IObjectAny) => {
+        return answers[answers.findIndex(
+            (answer) => answer.questionId === question.id)]?.input
+    }
 
     const handleAnswerTyping = (questionId: string, event: ChangeEvent) => {
         const element = event.currentTarget as HTMLInputElement;
@@ -32,13 +33,14 @@ export default function Questions() {
             setAnswers([...answers, { input: element.value, questionId: questionId}])
         }
         else {
-            let items = [...answers];
-            let item = {...answers[actualQuestionIndex]};
+            let tempAnswers = [...answers];
+            tempAnswers[actualQuestionIndex] = {
+                ...answers[actualQuestionIndex],
+                input: element.value,
+                questionId: questionId
+            };
 
-            item.input = element.value;
-            item.questionId = questionId
-            items[actualQuestionIndex] = item;
-            setAnswers(items)
+            setAnswers(tempAnswers)
         }
     }
     
@@ -52,8 +54,7 @@ export default function Questions() {
         <>
             <Typography>{id}</Typography>
             <form>
-                {data?.findQuestions.map((question: IObjectAny) => {
-                    const actualQuestionInput = answers[answers.findIndex((i) => i.questionId === question.id)]?.input
+                {questions.map((question: IObjectAny) => {
                     return (
                         <Box sx={{bgcolor: '#fcfcfc', borderRadius: '5%'}}>
                             <Typography my={2} fontFamily="Open Sans">{question.text}</Typography>
@@ -63,10 +64,10 @@ export default function Questions() {
                                         row 
                                         aria-label="gender" 
                                         name="row-radio-buttons-group"
-                                        value={actualQuestionInput}
+                                        value={getActualQuestionInput(question)}
                                         onChange={(event) => handleAnswerTyping(question.id, event)}
                                     >
-                                        {[...Array(10)].map((e, step) => {
+                                        {[...Array(10)].map((element, step) => {
                                           return  <FormControlLabel value={step+1} control={<Radio />} label={step+1} />
 
                                         })}
@@ -75,7 +76,7 @@ export default function Questions() {
                                 :
                                 <TextField
                                 variant="outlined"
-                                value={actualQuestionInput}
+                                value={getActualQuestionInput(question)}
                                 onChange={(event) => handleAnswerTyping(question.id, event)}
                             /> 
                             }
@@ -87,4 +88,8 @@ export default function Questions() {
             </form>
         </>
     )
+}
+
+export interface IObjectAny {
+    [key: string]: any;
 }
