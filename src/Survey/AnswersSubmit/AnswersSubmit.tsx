@@ -1,16 +1,15 @@
 import React, { FormEvent } from 'react';
 import { useMutation } from "@apollo/client";
 import { Button } from "@mui/material";
-import submitAnswersMutation from "../Mutations/submitAnswers";
 import { AppProps } from "../../App";
+import {SUBMIT_ANSWERS} from "../Mutations/submitAnswers";
 
 export default function AnswersSubmit({ answers }: AppProps) {
-    const mutation = submitAnswersMutation(answers)
-    const [submitAnswers, { error }] = useMutation(mutation);
+    const [submitAnswers, { error }] = useMutation(SUBMIT_ANSWERS);
 
     const handleAnswersSubmit = async (event: FormEvent) => {
         event.preventDefault()
-        const response = await submitAnswers()
+        const response = await submitAnswers({variables: {userAnswers: answers}})
         if(error) {
         }
         if(response) {

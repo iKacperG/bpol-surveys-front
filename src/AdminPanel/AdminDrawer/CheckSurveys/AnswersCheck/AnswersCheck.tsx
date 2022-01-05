@@ -8,7 +8,6 @@ export default function AnswersCheck({question}: AnswersCheckProps) {
     const [answers, setAnswers] = useState<{input: string, id: string}[]>([])
 
     useEffect(() => {
-        console.log(question.id)
         getAnswers({variables: {
                 questionId: question.id,
             }})
@@ -25,7 +24,6 @@ export default function AnswersCheck({question}: AnswersCheckProps) {
             <Table>
                 <TableBody>
                     {answers.map((answer: {input: string, id:string}) => {
-                        console.log(answer)
                         return (
                             <TableRow  sx={{'&:nth-of-type(odd)': {
                                     backgroundColor: '#e8edf3',

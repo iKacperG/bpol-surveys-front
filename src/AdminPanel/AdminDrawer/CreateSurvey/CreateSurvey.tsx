@@ -1,13 +1,28 @@
 import React, {ChangeEvent, FormEvent, useState} from 'react';
-import {Box, TextField, Button, Grid, Typography, ButtonGroup} from "@mui/material";
+import {
+    Box,
+    TextField,
+    Button,
+    Grid,
+    Typography,
+    ButtonGroup,
+    FormControlLabel,
+    FormControl,
+    RadioGroup,
+    Radio,
+} from "@mui/material";
 import {useMutation} from "@apollo/client";
-import createSurveyMutation from "../../Mutations/createSurvey";
+import {CREATE_SURVEY} from "../../Mutations/createSurvey";
 
 export default function CreateSurvey() {
-    const [actualQuestion, setActualQuestion] = useState("");
+    const [actualQuestion, setActualQuestion] = useState({
+        text: "",
+        inputType: "text",
+    });
+    const [inputType, setInputType] = useState("text")
     const [title, setTitle] = useState("");
-    const [questions, setQuestions] = useState<string[]>([]);
-    const [createSurvey, { error }] = useMutation(createSurveyMutation(title, questions));
+    const [questions, setQuestions] = useState<{text: string, inputType: string}[]>([]);
+    const [createSurvey, { error }] = useMutation(CREATE_SURVEY);
     const [surveyResponse, setSurveyResponse] = useState({
         createSurvey: {
             url: "",
@@ -23,17 +38,23 @@ export default function CreateSurvey() {
     const handleActualQuestionChange = ({currentTarget}: ChangeEvent) => {
         const element = currentTarget as HTMLInputElement;
         const value = element.value;
-        setActualQuestion(value);
+        setActualQuestion({...actualQuestion, text: value,});
+    }
+    
+    const handleRadioChange = ({target}: ChangeEvent) => {
+        const element = target as HTMLInputElement;
+        const value = element.value;
+        setActualQuestion({...actualQuestion, inputType: value})
+        setInputType(value);
     }
     
     const handleAddQuestionClick = () => {
         setQuestions((prevState) => [...prevState, actualQuestion]);
-        setActualQuestion("");
     }
     
     const handleAddSurveySubmit = async (event: FormEvent) => {
         event.preventDefault()
-        const response = await createSurvey()
+        const response = await createSurvey({variables: {title: title, questions: questions}})
         if(error) {
         }
         if(response) {
@@ -56,7 +77,7 @@ export default function CreateSurvey() {
                     {questions.map((question) => {
                         return (
                             <Grid item sm={12}>
-                                <Typography fontFamily="Open Sans" >{question}</Typography>
+                                <Typography fontFamily="Open Sans" >{question.text}</Typography>
                             </Grid>
                         )
                     })}
@@ -64,9 +85,22 @@ export default function CreateSurvey() {
                         <TextField
                             onChange={(event) => handleActualQuestionChange(event)}
                             label="New question"
-                            value={actualQuestion}
+                            value={actualQuestion.text}
                             fullWidth
                         />
+                        <FormControl component="fieldset">
+                            <RadioGroup
+                                row
+                                aria-label="input type"
+                                defaultValue="text"
+                                name="radio-buttons-group"
+                                value={inputType}
+                                onChange={handleRadioChange}
+                            >
+                                <FormControlLabel value="text" control={<Radio />} label="Text" />
+                                <FormControlLabel value="scale" control={<Radio />} label="Scale" />
+                            </RadioGroup>
+                        </FormControl>
                     </Grid>
                     <Grid item sm={12}>
                         <ButtonGroup>

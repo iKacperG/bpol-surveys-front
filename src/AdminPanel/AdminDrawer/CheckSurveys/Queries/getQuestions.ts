@@ -6,6 +6,7 @@ import {gql} from "@apollo/client";
         findQuestions(id: $surveyId) {
           id
           text
+          inputType
         }
       }
     `;

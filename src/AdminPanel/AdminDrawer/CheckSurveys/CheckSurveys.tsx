@@ -9,10 +9,9 @@ export default function CheckSurveys() {
     const { data: surveysData } = useQuery(GET_ALL_SURVEYS);
     const [getQuestions, { data: questionsData }] = useLazyQuery(GET_QUESTIONS);
     const [allSurveys, setAllSurveys] = useState([])
-    const [questions, setQuestions] = useState<{text: string, id: string}[]>([])
+    const [questions, setQuestions] = useState<{text: string, id: string, inputType: string, average: number}[]>([])
     
     const handleCheckSurvey = (surveyId: string) => {
-        console.log(surveyId)
         getQuestions({variables: {
             surveyId: surveyId,
             }})
@@ -21,14 +20,12 @@ export default function CheckSurveys() {
     useEffect(() => {
         if(surveysData) {
             setAllSurveys(surveysData.getAllSurveys)
-            console.log(surveysData.getAllSurveys)
         }
     }, [surveysData]) 
     
     useEffect(() => {
         if(questionsData) {
             setQuestions(questionsData.findQuestions)
-            console.log(questionsData.findQuestions)
         }
     }, [questionsData])
 
