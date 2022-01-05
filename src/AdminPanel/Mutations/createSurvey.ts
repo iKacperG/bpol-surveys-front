@@ -1,11 +1,10 @@
 import {gql} from "@apollo/client";
 
-export default function createSurveyMutation(title: string, questions: string[]) {
-    const CREATE_SURVEY = gql`
-    mutation {
+    export const CREATE_SURVEY = gql`
+    mutation($title: String!, $questions: [UserQuestion!]!) {
       createSurvey(surveyInput:{
-        name: "${title}"
-        questions: ["${questions.join('", "')}"]
+        name: $title
+        questions: $questions
       }) {
         id
         name
@@ -17,6 +16,3 @@ export default function createSurveyMutation(title: string, questions: string[])
       }
     }
     `;
-    
-    return CREATE_SURVEY;
-}

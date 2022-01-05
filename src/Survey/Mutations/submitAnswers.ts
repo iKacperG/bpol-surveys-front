@@ -1,18 +1,12 @@
 import {gql} from "@apollo/client";
-import unquoteJSON from "../../utils/unquoteJSON";
-
-export default function submitAnswersMutation(userAnswers: any[]) {
     
-    const SUBMIT_ANSWERS = gql`
-    mutation {
+    export const SUBMIT_ANSWERS = gql`
+    mutation($userAnswers: [UserAnswer!]!) {
       addAnswers(answerInput:{
-        userAnswers: [${unquoteJSON(userAnswers).substring(1, unquoteJSON(userAnswers).length - 1)}]
+        userAnswers: $userAnswers
       })
       {
-        id
+        response
       }
     }
     `;
-    
-    return SUBMIT_ANSWERS;
-}
