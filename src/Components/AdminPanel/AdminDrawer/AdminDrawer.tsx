@@ -35,9 +35,11 @@ export default function AdminDrawer() {
     };
     
     return (
-        <Box sx={{ display: 'flex' }}>
+        <Box display="flex">
             <CssBaseline />
-            <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <AppBar 
+                position="fixed" 
+                sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                     <Typography variant="h6" noWrap component="div">
                         Admin panel
@@ -77,7 +79,9 @@ export default function AdminDrawer() {
                     <Divider />
                 </Box>
             </Drawer>
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <Box 
+                component="main" 
+                sx={{ flexGrow: 1, p: 3 }}>
                 <Toolbar />
                 {displayView()}
             </Box>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, StyledEngineProvider } from '@mui/material';
-import Survey from '../src/Survey';
+import Survey from './Components/Survey';
 import './App.css';
 import { cache } from './cache';
 import {
@@ -9,7 +9,7 @@ import {
   NormalizedCacheObject,
   ApolloProvider
 } from '@apollo/client';
-import AdminPanel from "./AdminPanel";
+import AdminPanel from "./Components/AdminPanel";
 import theme from "./utils/theme";
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
@@ -36,6 +36,6 @@ function App() {
 
 export default App;
 
-export interface AppProps {
+export interface IAppProps {
     answers: {}[];
 }

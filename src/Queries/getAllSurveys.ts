@@ -6,5 +6,5 @@ export const GET_ALL_SURVEYS = gql`
         id
         name
     }
-}
+}   
 `;

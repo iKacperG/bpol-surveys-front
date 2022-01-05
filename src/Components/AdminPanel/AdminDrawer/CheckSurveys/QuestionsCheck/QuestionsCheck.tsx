@@ -6,7 +6,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AnswersCheck from "../AnswersCheck";
 
-export default function QuestionsCheck({questions}: QuestionsCheckProps) {
+export default function QuestionsCheck({questions}: IQuestionsCheckProps) {
 
     return (
         <>
@@ -28,6 +28,11 @@ export default function QuestionsCheck({questions}: QuestionsCheckProps) {
     )
 }
 
-export interface QuestionsCheckProps {
-    questions: {text: string, id: string, inputType: string, average: number}[]
+interface IQuestionsCheckProps {
+    questions: {
+        text: string,
+        id: string,
+        inputType: string,
+        average: number
+    }[]
 }

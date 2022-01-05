@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {useLazyQuery, useQuery} from "@apollo/client";
-import {GET_ALL_SURVEYS} from "./Queries/getAllSurveys";
+import {GET_ALL_SURVEYS} from "../../../../Queries/getAllSurveys";
 import { Grid, Paper } from "@mui/material";
 import QuestionsCheck from "./QuestionsCheck";
-import {GET_QUESTIONS} from "./Queries/getQuestions";
+import {GET_QUESTIONS} from "../../../../Queries/getQuestions";
+import {grid, paper} from "./styles";
 
 export default function CheckSurveys() {
     const { data: surveysData } = useQuery(GET_ALL_SURVEYS);
@@ -12,7 +13,7 @@ export default function CheckSurveys() {
     const [questions, setQuestions] = useState<{text: string, id: string, inputType: string, average: number}[]>([])
     
     const handleCheckSurvey = (surveyId: string) => {
-        getQuestions({variables: {
+        return getQuestions({variables: {
             surveyId: surveyId,
             }})
     }
@@ -34,22 +35,12 @@ export default function CheckSurveys() {
             <Grid container>
                 {allSurveys.map((survey: {name: string, id: string}) => {
                     return (
-                        <Grid item sx={{
-                            '& > :not(style)': {
-                                m: 1,
-                                width: 128,
-                                height: 128,
-                            },}}>
-                            <Paper sx={{
-                                cursor: 'pointer',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-    
-                            }} elevation={1}
-                            onClick={() => handleCheckSurvey(survey.id)}
+                        <Grid item sx={grid}>
+                            <Paper sx={paper}
+                                   elevation={1}
+                                   onClick={() => handleCheckSurvey(survey.id)}
                             >
-                                    {survey.name}
+                                {survey.name}
                             </Paper>
                         </Grid>
                     )
