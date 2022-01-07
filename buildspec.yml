@@ -27,6 +27,5 @@ phases:
 # ExpressJS apps will need other artifact directories included (bin/*, public/*, routes/*, views/* etc).
 artifacts:
   files:
-    - build/*
-    - build/static/*
+    - build/**
   name: source
