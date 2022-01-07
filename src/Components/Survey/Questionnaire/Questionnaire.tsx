@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import AnswersSubmit from "../AnswersSubmit";
 
-export default function Questions() {
+export default function Questionnaire() {
     const { id } = useParams();
     const { data } = useQuery(GET_MATCHING_QUESTIONS, {variables: {id: id}});
     const [questions, setQuestions] = useState([])
@@ -27,12 +27,11 @@ export default function Questions() {
     const handleAnswerTyping = (questionId: string, event: ChangeEvent) => {
         const element = event.currentTarget as HTMLInputElement;
         const actualQuestionIndex = answers
-            .findIndex((element) =>  element.questionId === questionId)
-        
-        if(actualQuestionIndex === -1) {
-            setAnswers([...answers, { input: element.value, questionId: questionId}])
-        }
-        else {
+            .findIndex((element) => element.questionId === questionId)
+
+        if (actualQuestionIndex === -1) {
+            setAnswers([...answers, {input: element.value, questionId: questionId}])
+        } else {
             let tempAnswers = [...answers];
             tempAnswers[actualQuestionIndex] = {
                 ...answers[actualQuestionIndex],
@@ -43,52 +42,53 @@ export default function Questions() {
             setAnswers(tempAnswers)
         }
     }
-    
+
     useEffect(() => {
-        if(data) {
+        if (data) {
             setQuestions(data.findQuestions)
         }
     }, [data])
-    
+
     return (
         <>
-            <Typography>{id}</Typography>
             <form>
                 {questions.map((question: IObjectAny) => {
                     return (
                         <Box sx={{bgcolor: '#fcfcfc', borderRadius: '5%'}}>
-                            <Typography my={2} fontFamily="Open Sans">{question.text}</Typography>
+                            <Typography my={2} fontSize={18} fontWeight={600}
+                                        fontFamily="Open Sans">{question.text}</Typography>
                             {question.inputType === 'scale' ?
                                 <FormControl component="fieldset">
-                                    <RadioGroup 
-                                        row 
-                                        aria-label="gender" 
+                                    <RadioGroup
+                                        row
+                                        aria-label="gender"
                                         name="row-radio-buttons-group"
                                         value={getActualQuestionInput(question)}
                                         onChange={(event) => handleAnswerTyping(question.id, event)}
                                     >
                                         {[...Array(10)].map((element, step) => {
-                                          return  <FormControlLabel value={step+1} control={<Radio />} label={step+1} />
+                                            return <FormControlLabel value={step + 1} control={<Radio/>}
+                                                                     label={step + 1}/>
 
                                         })}
                                     </RadioGroup>
                                 </FormControl>
                                 :
                                 <TextField
-                                variant="outlined"
-                                value={getActualQuestionInput(question)}
-                                onChange={(event) => handleAnswerTyping(question.id, event)}
-                            /> 
+                                    variant="outlined"
+                                    value={getActualQuestionInput(question)}
+                                    onChange={(event) => handleAnswerTyping(question.id, event)}
+                                />
                             }
-                         
+
                         </Box>
                     )
                 })}
-                <AnswersSubmit answers={answers}/>
-            </form>
-        </>
-    )
-}
+                    <AnswersSubmit answers={answers}/>
+                    </form>
+                    </>
+                    )
+                }
 
 export interface IObjectAny {
     [key: string]: any;

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { useParams } from "react-router";
 import {useQuery} from "@apollo/client";
 import {GET_SURVEY} from "../../Queries/getSurvey";
-import Questions from "./Questions";
+import Questionnaire from "./Questionnaire";
 import {
     Container,
     Box,
@@ -24,21 +24,21 @@ export default function Survey() {
     
     return (
         <Box sx={{bgcolor: '#eee'}}>
-            <Container fixed>
+            <Container maxWidth="xl">
                 <Paper>
                     <Grid 
                         container
                         spacing={2}
                         justifyContent="center" 
-                        sx={{ height: '100vh' }}>
+                        sx={{ height: '100vh', overflow: 'auto' }}>
                         <Grid item xs={12}>
                             <Typography 
-                                variant="h1" textAlign="center" mt={5}>{surveyName}
+                                variant="h1" textAlign="center" fontSize={64} mt={5}>{surveyName}
                             </Typography>
                         </Grid>
                         <Grid item xs={4}>
                             <Container maxWidth="sm">
-                                <Questions />
+                                <Questionnaire />
                             </Container>
                         </Grid>
                     </Grid>
