@@ -1,8 +1,9 @@
 export const grid = {
     '& > :not(style)': {
         m: 1,
-        width: 128,
-        height: 128,
+        width: 256,
+        height: 256,
+        padding: 5,
     },}
 
 export const paper = {
