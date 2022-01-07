@@ -10,7 +10,7 @@ import {
   ApolloProvider
 } from '@apollo/client';
 import AdminPanel from "./Components/AdminPanel";
-import theme from "./utils/theme";
+import theme from "./Utils/theme";
 
 const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
   cache,
